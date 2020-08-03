@@ -6,19 +6,19 @@ import 'ex_warp_height_custom_multi_child_layout.dart';
 /// 能够设置 左上右下位置icon的布局
 class ExIconWidget extends StatelessWidget {
   // 主显示内容
-  Widget content;
-  Widget leftIcon;
-  Widget topIcon;
-  Widget rightIcon;
-  Widget bottomIcon;
+  final Widget content;
+  final Widget leftIcon;
+  final Widget topIcon;
+  final Widget rightIcon;
+  final Widget bottomIcon;
 
   // 最大宽度
-  double maxWidth;
+  final double maxWidth;
   // 最大高度
-  double maxHeight;
+  final double maxHeight;
 
   // icon和主控件之间的间距
-  EdgeInsetsGeometry contentPadding;
+  final EdgeInsetsGeometry contentPadding;
 
   ExIconWidget(
       {this.content,

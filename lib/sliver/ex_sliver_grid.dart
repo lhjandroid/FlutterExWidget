@@ -9,7 +9,7 @@ class ExSliverGrid extends SliverMultiBoxAdaptorWidget {
   /// Creates a sliver that places multiple box children in a two dimensional
   /// arrangement.
 
-  OnLayoutPosition onLayoutPosition;
+  final OnLayoutPosition onLayoutPosition;
 
   ExSliverGrid({
     Key key,
@@ -29,6 +29,7 @@ class ExSliverGrid extends SliverMultiBoxAdaptorWidget {
   ///  * [new GridView.count], the equivalent constructor for [GridView] widgets.
   ExSliverGrid.count({
     Key key,
+    this.onLayoutPosition,
     @required int crossAxisCount,
     double mainAxisSpacing = 0.0,
     double crossAxisSpacing = 0.0,
@@ -53,6 +54,7 @@ class ExSliverGrid extends SliverMultiBoxAdaptorWidget {
   ///  * [new GridView.extent], the equivalent constructor for [GridView] widgets.
   ExSliverGrid.extent({
     Key key,
+    this.onLayoutPosition,
     @required double maxCrossAxisExtent,
     double mainAxisSpacing = 0.0,
     double crossAxisSpacing = 0.0,

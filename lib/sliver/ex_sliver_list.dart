@@ -5,7 +5,7 @@ import 'package:flutter_ex_widget/sliver/ex_function.dart';
 
 class ExSliverList extends SliverMultiBoxAdaptorWidget {
 
-  OnLayoutPosition onLayoutPosition;
+  final OnLayoutPosition onLayoutPosition;
 
   ExSliverList({
     Key key,
