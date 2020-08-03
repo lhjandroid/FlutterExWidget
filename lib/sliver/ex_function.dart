@@ -1,0 +1,1 @@
+typedef OnLayoutPosition(int start,int end);

@@ -1,0 +1,76 @@
+import 'package:flutter/material.dart';
+
+import 'ex_multi_child_layout_delegate.dart';
+import 'ex_warp_height_custom_multi_child_layout.dart';
+
+/// 能够设置 左上右下位置icon的布局
+class ExIconWidget extends StatelessWidget {
+  // 主显示内容
+  Widget content;
+  Widget leftIcon;
+  Widget topIcon;
+  Widget rightIcon;
+  Widget bottomIcon;
+
+  // 最大宽度
+  double maxWidth;
+  // 最大高度
+  double maxHeight;
+
+  // icon和主控件之间的间距
+  EdgeInsetsGeometry contentPadding;
+
+  ExIconWidget(
+      {this.content,
+      this.leftIcon,
+      this.topIcon,
+      this.rightIcon,
+      this.bottomIcon,
+      this.contentPadding,
+      @required this.maxWidth,
+      @required this.maxHeight});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      color: Colors.red,
+      child: ExeWarpHeightCustomMultiChildLayout(
+        delegate: ExIconWidgetDelegate(maxWidth: maxWidth,maxHeihgt: maxHeight),
+        children: [
+          LayoutId(
+              id: ExIconWidgetId.left,
+              child: leftIcon ??
+                  SizedBox(
+                    width: 1,
+                    height: 1,
+                  )),
+          LayoutId(
+              id: ExIconWidgetId.top,
+              child: topIcon ??
+                  SizedBox(
+                    width: 1,
+                    height: 1,
+                  )),
+          LayoutId(id: ExIconWidgetId.content, child: content),
+          LayoutId(
+              id: ExIconWidgetId.right,
+              child: rightIcon ??
+                  SizedBox(
+                    width: 1,
+                    height: 1,
+                  )),
+          LayoutId(
+              id: ExIconWidgetId.bottom,
+              child: bottomIcon ??
+                  SizedBox(
+                    width: 1,
+                    height: 1,
+                  )),
+        ],
+      )
+      ,
+    );
+  }
+}
+
+
