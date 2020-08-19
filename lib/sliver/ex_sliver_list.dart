@@ -172,10 +172,22 @@ class RenderSliverList extends RenderSliverMultiBoxAdaptor {
     // been laid out, and is in fact our leadingChildWithLayout. It's possible
     // that some children beyond that one have also been laid out.
 
+    // 每次布局重构时置为-1
+    reaStartPosition = -1;
+    reaEdnPosition = -1;
     bool inLayoutRange = true;
     RenderBox child = earliestUsefulChild;
     int index = indexOf(child);
     double endScrollOffset = childScrollOffset(child) + paintExtentOf(child);
+    // 判断当前item是否在屏幕中
+    if ((endScrollOffset - (constraints?.scrollOffset ?? 0)) >= 0
+        && ((endScrollOffset - (constraints?.scrollOffset ?? 0)) < constraints.viewportMainAxisExtent)) {
+      if (firstInLayoutItem) {
+        firstInLayoutItem = false;
+        reaStartPosition = index;
+      }
+      reaEdnPosition = index;
+    }
     bool advance() { // returns true if we advanced, false if we have no more children
       // This function is used in two different places below, to avoid code duplication.
       assert(child != null);
@@ -208,15 +220,11 @@ class RenderSliverList extends RenderSliverMultiBoxAdaptor {
       childParentData.layoutOffset = endScrollOffset;
       assert(childParentData.index == index);
       // 判断当前item是否在屏幕中
-      if ((endScrollOffset - (constraints?.scrollOffset ?? 0)) >= 0
+      if ((endScrollOffset - (constraints?.scrollOffset ?? 0) + (child.size?.height ?? 0)) >= 0
           && ((endScrollOffset - (constraints?.scrollOffset ?? 0)) <= constraints.viewportMainAxisExtent)) {
         if (firstInLayoutItem) {
           firstInLayoutItem = false;
-          // -1是为了方便处理 其实应该从上面找到起始绘制时开始判断 但从现象上来看 -1就是正确解决 可以参考ex_sliver_grid来处理 且起始位置为index+
-          int pre = index - 1;
-          if (pre >= 0) {
-            reaStartPosition = pre;
-          }
+          reaStartPosition = index;
         }
         reaEdnPosition = index;
       }
