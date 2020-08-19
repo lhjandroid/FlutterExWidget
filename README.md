@@ -28,7 +28,8 @@ ExSliverList1(
               },
           )
 ```
-只需要传入onLayoutPosition方法就会回调屏幕中的item 不包含屏幕外的
+只需要传入onLayoutPosition方法就会回调屏幕中的item 不包含屏幕外的。
+-1表示不在屏幕中
 
 #ExSliverGrid
 ```
@@ -75,6 +76,26 @@ ExIconWidget(
               )
 ```
 注意需要设置maxHeight,maxWidth.如果宽高没有要求可以尽量大一些，但最终会以实际大小为准。内部会自动计算最终的控件大小
+
+#ExFlow
+```
+ExFlow(
+                delegate: TagDelegate(
+                  maxLines: flowRowCount,
+                  itemSpace: 8,
+                  lineHeight: 8,
+                  needLoseItemWhenItemWidthBig: false, // 如果某一个tag很长会导致一直判断为ture 可以设置ture丢弃该项
+                ),
+                children: List.generate(
+                    widget?.tags?.length??0,
+                    (index) => TagChip(
+                          widget?.tags[index],
+                          index,
+                          widget.jumpToTop,
+                        )),
+              ),
+            )
+```
 
 如果后续大家有现有基础控件上无法实现的效果，或者比较复杂的布局想简化时，也可以告知我 非常乐意扩展简单易用的控件，让后续
 业务开发中更加快捷方便😊
