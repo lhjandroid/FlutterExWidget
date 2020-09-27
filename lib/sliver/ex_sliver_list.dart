@@ -2,14 +2,18 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_ex_widget/sliver/ex_function.dart';
+import 'package:flutter_ex_widget/sliver/ex_scroll_position.dart';
+import 'package:flutter_ex_widget/sliver/ex_scroll_position_controller.dart';
 
 class ExSliverList extends SliverMultiBoxAdaptorWidget {
 
   final OnLayoutPosition onLayoutPosition;
+  final ExScrollPositionController positionController;
 
   ExSliverList({
     Key key,
     this.onLayoutPosition,
+    this.positionController,
     @required SliverChildDelegate delegate,
   }) : super(key: key, delegate: delegate);
 
@@ -30,9 +34,12 @@ class RenderSliverList extends RenderSliverMultiBoxAdaptor {
   int reaEdnPosition = 0;
 
   OnLayoutPosition onLayoutPosition;
+  // 位置信息记录controller
+  final ExScrollPositionController positionController;
 
   RenderSliverList({
     this.onLayoutPosition,
+    this.positionController,
     @required RenderSliverBoxChildManager childManager,
   }) : super(childManager: childManager);
 
@@ -315,6 +322,11 @@ class RenderSliverList extends RenderSliverMultiBoxAdaptor {
     // 布局完成回调在屏幕中的item
     if (onLayoutPosition != null) {
       onLayoutPosition(reaStartPosition,reaEdnPosition);
+    }
+    // 布局完成回调在屏幕中的item
+    if (positionController != null) {
+      positionController.value = ExScrollPosition(reaStartPosition: reaStartPosition,
+          reaEdnPosition: reaEdnPosition);
     }
   }
 }

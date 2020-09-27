@@ -1,7 +1,10 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter_ex_widget/sliver/ex_scroll_position.dart';
 import 'dart:math' as math;
+
+import 'ex_scroll_position_controller.dart';
 
 typedef OnLayoutPosition(int start,int end);
 
@@ -10,10 +13,12 @@ class ExSliverGrid extends SliverMultiBoxAdaptorWidget {
   /// arrangement.
 
   final OnLayoutPosition onLayoutPosition;
+  final ExScrollPositionController positionController;
 
   ExSliverGrid({
     Key key,
     this.onLayoutPosition,
+    this.positionController,
     @required SliverChildDelegate delegate,
     @required this.gridDelegate,
   }) : super(key: key, delegate: delegate);
@@ -30,6 +35,7 @@ class ExSliverGrid extends SliverMultiBoxAdaptorWidget {
   ExSliverGrid.count({
     Key key,
     this.onLayoutPosition,
+    this.positionController,
     @required int crossAxisCount,
     double mainAxisSpacing = 0.0,
     double crossAxisSpacing = 0.0,
@@ -55,6 +61,7 @@ class ExSliverGrid extends SliverMultiBoxAdaptorWidget {
   ExSliverGrid.extent({
     Key key,
     this.onLayoutPosition,
+    this.positionController,
     @required double maxCrossAxisExtent,
     double mainAxisSpacing = 0.0,
     double crossAxisSpacing = 0.0,
@@ -111,11 +118,13 @@ class ExRenderSliverGrid extends RenderSliverMultiBoxAdaptor {
   int reaEndPosition = 0;
 
   OnLayoutPosition _layoutPosition;
+  final ExScrollPositionController positionController;
 
   ExRenderSliverGrid({
     @required RenderSliverBoxChildManager childManager,
     @required SliverGridDelegate gridDelegate,
-    @required OnLayoutPosition layoutPosition
+    @required OnLayoutPosition layoutPosition,
+    this.positionController
   }) : assert(gridDelegate != null),
         _gridDelegate = gridDelegate,
         super(childManager: childManager) {
@@ -208,6 +217,9 @@ class ExRenderSliverGrid extends RenderSliverMultiBoxAdaptor {
       }
     }
 
+    // 每次重置状态
+    int reaStartPosition = -1;
+    int reaEndPosition = -1;
     RenderBox trailingChildWithLayout;
 
     // y变小的时候 往回滑动时 插入头部布局
@@ -321,6 +333,10 @@ class ExRenderSliverGrid extends RenderSliverMultiBoxAdaptor {
     childManager.didFinishLayout();
     if (_layoutPosition != null) {
       _layoutPosition(reaStartPosition,reaEndPosition);
+    }
+    if (positionController != null) {
+      positionController.value = ExScrollPosition(reaStartPosition: reaStartPosition,
+          reaEdnPosition: reaEndPosition);
     }
   }
 }
