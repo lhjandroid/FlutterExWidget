@@ -78,6 +78,7 @@ ExIconWidget(
 注意需要设置maxHeight,maxWidth.如果宽高没有要求可以尽量大一些，但最终会以实际大小为准。内部会自动计算最终的控件大小
 
 #ExFlow
+可以设置最大行数的Tag标签控件,超过部分不展示
 ```
 ExFlow(
                 delegate: TagDelegate(
