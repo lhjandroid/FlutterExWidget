@@ -98,5 +98,35 @@ ExFlow(
             )
 ```
 
+
+#ExText
+不同手机上居中展示
+```
+ExTxt('文字',TextStyle(fontSize:14))
+```
+
+#ExRichText
+特俗文字标为特定颜色
+```
+ExRichText(
+  text: 'hehe#_\$1111#_\$aaa#_\$2222',
+  flag: '#_\$',
+  style: TextStyle(color: Colors.black),
+  flagStyle: TextStyle(color: Colors.red),
+)
+```
+
+#ExAlignLengthText
+不同个数文字首尾对齐
+呵    呵
+呵 呵 和
+```
+ExAlignLengthText(
+              text: label ?? '',
+              alignTextLength: 4,
+              style: TextStyle(color: Color(AppColors.textGray96), fontSize: 12),
+            )
+```
+
 如果后续大家有现有基础控件上无法实现的效果，或者比较复杂的布局想简化时，也可以告知我 非常乐意扩展简单易用的控件，让后续
 业务开发中更加快捷方便😊
