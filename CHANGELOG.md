@@ -5,3 +5,7 @@
 
 ## [0.0.5] - TODO: Add release date.
 新增ExListView和ExGridView
+
+## [0.0.6]
+新增ExText 针对华为小米vivo等机型上不居中的问题
+新增ExRichText 特殊表示扩起来的变为特殊颜色的控件
