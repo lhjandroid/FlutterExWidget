@@ -295,6 +295,7 @@ class RenderCustomMultiChildLayoutBox extends RenderBox
   }
 }
 
+/// 子控件的大小计算和摆放位置
 class ExIconWidgetDelegate extends ExMultiChildLayoutDelegate {
   double width = 0;
   double height = 0;
@@ -303,8 +304,10 @@ class ExIconWidgetDelegate extends ExMultiChildLayoutDelegate {
   double maxHeihgt = 0;
 
   bool isFirst = true;
+  // 横向超出时是否截断
+  bool needClipContent;
 
-  ExIconWidgetDelegate({@required this.maxWidth,@required this.maxHeihgt});
+  ExIconWidgetDelegate({@required this.maxWidth,@required this.maxHeihgt,this.needClipContent = true});
 
   @override
   Size getSize(BoxConstraints constraints) {
@@ -338,14 +341,23 @@ class ExIconWidgetDelegate extends ExMultiChildLayoutDelegate {
     if (hasChild(ExIconWidgetId.left)) {
       left = layoutChild(ExIconWidgetId.left, constraints);
     }
-    // 内容
-    if (hasChild(ExIconWidgetId.content)) {
-      content = layoutChild(ExIconWidgetId.content, constraints);
-    }
 
     // 右icon
     if (hasChild(ExIconWidgetId.right)) {
       right = layoutChild(ExIconWidgetId.right, constraints);
+    }
+
+    // 内容
+    if (hasChild(ExIconWidgetId.content)) {
+      BoxConstraints boxConstraints = BoxConstraints();
+      double maxWidth = 0;
+      if (needClipContent) {
+        // 如果允许截断 那内容区域的最大宽度应该是父控件的宽度-左边控件的宽度-右边控件的宽度
+        maxWidth = size.width - (left?.width ?? 0) - (right?.width ?? 0);
+        boxConstraints = BoxConstraints(maxWidth: maxWidth,maxHeight: size.height);
+      }
+      // 布局时 需要根据此时内容区域能够展示的最大区域来计算
+      content = layoutChild(ExIconWidgetId.content, needClipContent ? boxConstraints :constraints);
     }
 
     if (top != null) {
@@ -360,15 +372,19 @@ class ExIconWidgetDelegate extends ExMultiChildLayoutDelegate {
               0, (top?.height ?? 0) + getTowSizeHeightDis(content, left) / 2));
     }
 
+    double contentWidth = content?.width ?? 0;
     if (content != null) {
+      if (needClipContent && ((left?.width ?? 0) + contentWidth + (right?.width ?? 0)) > size.width) {
+        contentWidth = size.width - (right.width ?? 0) - (left?.width ?? 0);
+      }
       positionChild(
-          ExIconWidgetId.content, Offset(left?.width ?? 0, top?.height ?? 0));
+          ExIconWidgetId.content, Offset(left?.width ?? 0,  top?.height ?? 0));
     }
 
     if (right != null) {
       positionChild(
           ExIconWidgetId.right,
-          Offset(getTowSizeWidth(left, content),
+          Offset(getTowSizeWidth(left,needClipContent ? Size(contentWidth, content?.height ?? 0) : content),
               (top?.height ?? 0) + getTowSizeHeightDis(content, right) / 2));
     }
 
@@ -379,9 +395,9 @@ class ExIconWidgetDelegate extends ExMultiChildLayoutDelegate {
               (top?.height ?? 0) + getTowSizeHeightDis(content, bottom) / 2));
     }
 
-    width = (left?.width ?? 0) + (content?.width ?? 0) + (right?.width ?? 0);
+    width = (left?.width ?? 0) + contentWidth + (right?.width ?? 0);
     height = (top?.height ?? 0) + (content?.height ?? 0) + (bottom?.height ?? 0);
-    print('performLayout width$width');
+
     //size = Size(width,height);
   }
 

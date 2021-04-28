@@ -128,5 +128,50 @@ ExAlignLengthText(
             )
 ```
 
+#ExCenterLineWidget
+```
+ExCenterLineWidget(
+                    child: Text(
+                      'You have pushed the button this many times:¥3',
+                    ),
+                    color: Colors.redAccent,
+                    lineHeight: 2,
+                  ),
+```
+
+#ExPrice
+```dart
+Container(
+                    color: Colors.amber,
+                    margin: EdgeInsets.only(top: 6, bottom: 6),
+                    child: ExPrice(
+                      '123456',
+                      TextStyle(fontSize: 50, height: 1.0),
+                      priceUnit: '折',
+                      priceUnitStyle: TextStyle(fontSize: 20),
+                      isLeft: true,
+                    ),
+                  ),
+```
+
+#showCustomSizeDialog
+```dart
+showCustomSizeDialog(
+      context,
+      child: Container(
+        width: 100,
+        height: 100,
+        color: Colors.white,
+        child: Text('test'),
+      ),
+      onClickOutSide: () { // 点击蒙层区域
+        //Navigator.of(context).pop();
+      },
+      // onClickContent: () { // 点击内容区域 这里对应的child
+      //   Navigator.of(context).pop();
+      // },
+    );
+```
+
 如果后续大家有现有基础控件上无法实现的效果，或者比较复杂的布局想简化时，也可以告知我 非常乐意扩展简单易用的控件，让后续
 业务开发中更加快捷方便😊
